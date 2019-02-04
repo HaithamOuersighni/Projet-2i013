@@ -1,17 +1,25 @@
 from module import joueur_fonceur, joueur_attaquant, joueur_defenceur
-#from module import random_strategy
+from soccersimulator import SoccerTeam
 
-# Create teams
-team1 = SoccerTeam(name="Team 1")
-team2 = SoccerTeam(name="Team 2")
+def get_team ( nb_players ):
+    team = SoccerTeam(name=" ulysse's Team ")
+    if nb_players == 1: 
+        team.add ( "Fonceur" , joueur_fonceur())
+    if nb_players == 2:
+        team.add("defenceur",joueur_defenceur())
+        team.add("attaquant",joueur_attaquant())
+    return team
 
-# Add players
-team1.add("Attaquant", joueur_attaquant())  # Random strategy
-team1.add("Defenceur", joueur_defenceur())
-team2.add("Defenceur", joueur_defenceur())
-team2.add("Fonceur",  joueur_fonceur()) # Static strategy
 
-# Create a match
-simu = Simulation(team1, team2)
+if __name__ == '__main__':
+    from soccersimulator import Simulation , show_simu
 
-# Simulate and display the match
+    # Check teams with 1 player and 2 players
+    team1 = get_team(2)
+    team2 = get_team(2)
+
+    # Create a match
+    simu = Simulation(team1,team2)
+
+    # Simulate and display the match
+    show_simu(simu)
