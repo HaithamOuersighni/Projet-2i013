@@ -1,7 +1,9 @@
 # coding: utf-8
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu, math
-from soccersimulator import settings
-import tools
+from soccersimulator import settings 
+from .tools import SuperState
+from .settings import *
+
 
 class RandomStrategy(Strategy):
     def __init__(self):
@@ -70,4 +72,4 @@ team2.add("Fonceur",  joueur_fonceur()) # Static strategy
 simu = Simulation(team1, team2)
 
 # Simulate and display the match
-show_simu(simu)
+show_simu(simu) 
