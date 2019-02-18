@@ -29,6 +29,9 @@ class SuperState(object):
         def norme(self):
             return math.sqrt((self.ball.x-self.player.x)**2+(self.ball.y-self.player.y)**2)
         @property
+        def gnorme(self):
+            return math.sqrt(((self.id_team%2)*GAME_WIDTH-self.player.x)**2+(45-self.player.y)**2)
+        @property
         def fnorme(self):
             i=0
             n=len(self.state.players)/2
@@ -39,6 +42,16 @@ class SuperState(object):
                 i=i+1
             return v
         @property
+        def enorme(self):
+            i=0
+            n=len(self.state.players)/2
+            v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            while i<n:
+                if (math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-self.ball.x)**2+(self.state.player_state(self.id_team%2+1,i).position.y-self.ball.y)**2)<math.sqrt(v.x**2+v.y**2)):
+                    v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-self.ball.x,self.state.player_state(self.id_team%2+1,i).position.y-self.ball.y)
+                i=i+1
+            return math.sqrt(v.x**2+v.y**2)
+        @property
         def eproche(self):
             i=0
             n=len(self.state.players)/2
@@ -47,7 +60,7 @@ class SuperState(object):
                 if (math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)**2)<math.sqrt(v.x**2+v.y**2)):
                     v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-self.player.x,self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)
                 i=i+1
-            return v.x**2+v.y**2
+            return math.sqrt(v.x**2+v.y**2)
         @property
         def fproche(self):
             i=0
@@ -59,6 +72,12 @@ class SuperState(object):
                 i=i+1
             return v
         
+        @property
+        def test(self):
+            
+            a=(self.ball.y+45)/self.ball.x
+            b=GAME_HEIGHT/2
+            return a*self.player.x+b
         #@property
         """def pgoal(self):
             if self.id_team==1:
