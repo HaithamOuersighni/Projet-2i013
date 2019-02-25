@@ -52,7 +52,7 @@ class joueur_fonceur2(Strategy):
         i=s.goal.x
         if s.norme>PLAYER_RADIUS+BALL_RADIUS:
             return SoccerAction((s.ball-s.player),Vector2D())
-        return SoccerAction((s.ball-s.player),Vector2D(i,GAME_HEIGHT/2)-s.player)
+        return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player)*4)
     
 class alfonseur(Strategy):
     def __init__(self):

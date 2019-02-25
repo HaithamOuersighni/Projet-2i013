@@ -11,13 +11,13 @@ from .random_strategy import *
 def get_team ( nb_players ):
     team = SoccerTeam(name=" HUP's Team ")
     if nb_players == 1: 
-        team.add("neymar" , joueur_fonceur())
+        team.add("fonceur", joueur_fonceur2())
     if nb_players == 2:
         team.add("defenseur",joueur_defenseur())
         team.add("attaquant",joueur_attaquant())
     if nb_players == 3:
-       team.add("defenseur",joueur_fonceur())
-       team.add("attaquant",joueur_attaquant())
+        team.add("defenseur",joueur_fonceur())
+        team.add("attaquant",joueur_attaquant())
     if nb_players == 4:
-        team.add("fonceur", joueur_fonceur2())
+        team.add("neymar" , joueur_fonceur())
     return team
