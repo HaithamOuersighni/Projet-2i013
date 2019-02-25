@@ -40,7 +40,7 @@ class SuperState(object):
                 if 0<(math.sqrt((self.state.player_state(self.id_team,i).position.x-self.ball.x)**2+(self.state.player_state(self.id_team,i).position.y-self.ball.y)**2) and (math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)<math.sqrt(v.x**2+v.y**2))):
                     v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.ball.x,self.state.player_state(self.id_team,i).position.y-self.ball.y)
                 i=i+1
-            return v
+            return math.sqrt(v.x**2+v.y**2)
         @property
         def enorme(self):
             i=0
@@ -74,10 +74,21 @@ class SuperState(object):
         
         @property
         def test(self):
-            
-            a=(self.ball.y+45)/self.ball.x
-            b=GAME_HEIGHT/2
+            if self.id_team==1:
+                a=(self.ball.y-45)/self.ball.x
+                b=45
+            else:
+                a=(self.ball.y-45)/(self.ball.x-150)
+                b=45-150*a
             return a*self.player.x+b
+        
+        @property
+        def enemy1v1(self):
+            if self.id_team==1:
+                return state.player_state(2,0).position
+            else:
+                return state.player_state(1,0).position
+            
         #@property
         """def pgoal(self):
             if self.id_team==1:
@@ -112,3 +123,31 @@ class SuperState(object):
                 
             return Vector2D(x,y)"""
             
+class Decorator():
+    def __init__ ( self , state ):
+            self.state = state
+    def __getattr__ ( self , attr ):
+            return getattr ( self . state , attr )
+class Shoot ( Decorator ):
+    def __init__ ( self , state ):
+        self.state=state
+    def shoot ( self , p ):
+        dist=self.norme
+        if dist<PLAYER_RADIUS+BALL_RADIUS:
+            return SoccerAction ( shoot=p)
+        else:
+            return SoccerAction()
+    def to_goal(self, strength):
+        return self.shoot((self.state.goal-self.state.player).normalize()*strength)
+class Passe ( Decorator ):
+    def __init__ ( self , state ):
+        Decorator . __init__ ( self , state )        
+    def passe ( self , p ):
+        return SoccerAction ( Vector2D (...))
+class Move(object):
+    def __init__(self,state):
+        self.state=state
+    def move(self,acceleration=None):
+        return SoccerAction(acceleration=acceleration)
+    def to_ball(self):
+        return self.move(self.state.ball-self.state.player)
