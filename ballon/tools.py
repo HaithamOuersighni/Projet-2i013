@@ -32,6 +32,16 @@ class SuperState(object):
         def gnorme(self):
             return math.sqrt(((self.id_team%2)*GAME_WIDTH-self.player.x)**2+(45-self.player.y)**2)
         @property
+        def cnorme(self):
+            i=0
+            n=len(self.state.players)/2
+            v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            while i<n:
+                if 0<math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-self.goal.x)**2+(self.state.player_state(self.id_team%2+1,i).position.y-self.goal.y)**2) and (math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-self.goal.x)**2+(self.state.player_state(self.id_team%2+1,i).position.y-self.goal.y)**2))<math.sqrt(v.x**2+v.y**2):
+                    v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-self.goal.x,self.state.player_state(self.id_team%2+1,i).position.y-self.goal.y)
+                i=i+1
+            return math.sqrt(v.x**2+v.y**2)
+        @property
         def fnorme(self):
             i=0
             n=len(self.state.players)/2

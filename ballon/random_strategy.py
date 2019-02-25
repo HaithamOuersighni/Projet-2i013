@@ -21,15 +21,17 @@ class joueur_fonceur(Strategy):
     def compute_strategy(self, state, id_team, id_player):
         s=SuperState(state,id_team,id_player)
         i=s.goal.x
+        if s.ball.x==GAME_WIDTH/2 and s.ball.y==GAME_HEIGHT/2:
+                return SoccerAction(Vector2D(),Vector2D(i,GAME_HEIGHT/2)-s.player)
         if s.norme>PLAYER_RADIUS+BALL_RADIUS:
             return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
         else:
             if id_team==1:
                 if state.player_state(2,0).position.x>s.player.x:
                     if s.player.y>45:
-                        return SoccerAction((s.ball+2*s.vball-s.player),Vector2D(i,GAME_HEIGHT))
+                        return SoccerAction((s.ball+2*s.vball-s.player),Vector2D(s.player.x+5, s.player.y+5).normalize()*3)
                     else:
-                        return SoccerAction((s.ball+2*s.vball-s.player),Vector2D(i,0))
+                        return SoccerAction((s.ball+2*s.vball-s.player),Vector2D(s.player.x+5, s.player.y-5).normalize()*3)
                 else:
                     return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize())
             else:
@@ -90,6 +92,31 @@ class joueur_attaquant(Strategy):
         s=SuperState(state,id_team,id_player)
         i=s.goal.x
         if id_team==2: 
+           if  s.ball.x>GAME_WIDTH/100*70:
+               if s.ball.y>GAME_HEIGHT/2:
+                   return SoccerAction((Vector2D(GAME_WIDTH/100*65,s.ball.y+10)-s.player),Vector2D())
+               return SoccerAction((Vector2D(GAME_WIDTH/100*65,s.ball.y-10)-s.player),Vector2D())
+        if id_team==1:
+            if s.ball.x<GAME_WIDTH/100*30:
+                if s.ball.y<GAME_HEIGHT/2:
+                    return SoccerAction((Vector2D(GAME_WIDTH/100*35,s.ball.y+10)-s.player),Vector2D())
+                return SoccerAction((Vector2D(GAME_WIDTH/100*35,s.ball.y-10)-s.player),Vector2D())
+        if s.norme>PLAYER_RADIUS+BALL_RADIUS:
+            return SoccerAction((s.ball+4*s.vball-s.player),Vector2D())
+        if (s.player.x<6*GAME_WIDTH/7 and s.id_team==1)or(s.player.x>GAME_WIDTH/7 and s.id_team==2)or (s.cnorme>s.gnorme):
+            return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize())
+        else:
+            return SoccerAction((s.ball-s.player),Vector2D(i,GAME_HEIGHT/2)-s.player)
+        
+        
+class joueur_unedeux(Strategy):
+     def __init__(self):
+        Strategy.__init__(self, "Attaquant")
+        
+     def compute_strategy(self, state, id_team, id_player):
+        s=SuperState(state,id_team,id_player)
+        i=s.goal.x
+        if id_team==2: 
            if  s.ball.x>GAME_WIDTH/100*70:  
                 return SoccerAction((Vector2D(GAME_WIDTH/100*65,s.ball.y)-s.player),Vector2D())
         if id_team==1:
@@ -120,15 +147,16 @@ class joueur_defenseur(Strategy):
                 return SoccerAction((Vector2D(4*GAME_WIDTH/5,GAME_HEIGHT/2)-s.player),Vector2D())
 
         if id_team==1:
-                if  s.ball.x>GAME_WIDTH/2 and s.fnorme<s.enorme:  
-                    return SoccerAction((Vector2D(GAME_WIDTH/10,s.test)-s.player),Vector2D())
+            if  s.ball.x>2*GAME_WIDTH/5:# s.fnorme<s.enorme:  
+                return SoccerAction((Vector2D(GAME_WIDTH/7,s.test)-s.player),Vector2D())
                 
         if id_team==2:
-            if s.ball.x<GAME_WIDTH/2  and s.fnorme<s.enorme:
-                return SoccerAction((Vector2D(9*GAME_WIDTH/10,s.test)-s.player),Vector2D())
+            if s.ball.x<3*GAME_WIDTH/5:# s.fnorme<s.enorme:
+                return SoccerAction((Vector2D(6*GAME_WIDTH/7,s.test)-s.player),Vector2D())
+            
         if s.norme>PLAYER_RADIUS+BALL_RADIUS:
             return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
-        return SoccerAction((s.ball+4*s.vball-s.player),s.fproche)
+        return SoccerAction((s.ball+4*s.vball-s.player),(s.fproche).normalize()*4)
     
     
 class joueur_defenseur2(Strategy):
