@@ -52,7 +52,7 @@ class SuperState(object):
                 i=i+1
             return math.sqrt(v.x**2+v.y**2)
         @property
-        def enorme(self):
+        def enorme(self): #distance ball et adversaire
             i=0
             n=len(self.state.players)/2
             v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
@@ -71,6 +71,20 @@ class SuperState(object):
                     v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-self.player.x,self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)
                 i=i+1
             return math.sqrt(v.x**2+v.y**2)
+        
+        @property
+        def pos_eproche(self): # retourne la position de l'ennemie le plus proche
+            i=0
+            n=len(self.state.players)/2
+            v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            while i<n:
+                if (math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)**2)<math.sqrt(v.x**2+v.y**2)):
+                    v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-self.player.x,self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)
+                    j=self.state.player_state(self.id_team%2+1,i).position
+                i=i+1
+            return j
+                
+            
         @property
         def fproche(self):
             i=0
@@ -83,7 +97,7 @@ class SuperState(object):
             return v
         
         @property
-        def test(self):
+        def aligne_def(self): #s'aligne entre la balle et les cage pour un x donné
             if self.id_team==1:
                 a=(self.ball.y-45)/self.ball.x
                 b=45
@@ -91,6 +105,16 @@ class SuperState(object):
                 a=(self.ball.y-45)/(self.ball.x-150)
                 b=45-150*a
             return a*self.player.x+b
+        
+        @property
+        def aligne_def_y(self): #s'aligne entre la balle et les cage pour un y donné
+            if self.id_team==1:
+                a=(self.ball.y-45)/self.ball.x
+                b=45
+            else:
+                a=(self.ball.y-45)/(self.ball.x-150)
+                b=45-150*a
+            return (self.player.y-b)/a
         
         @property
         def enemy1v1(self):

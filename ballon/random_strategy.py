@@ -147,12 +147,28 @@ class joueur_defenseur(Strategy):
                 return SoccerAction((Vector2D(4*GAME_WIDTH/5,GAME_HEIGHT/2)-s.player),Vector2D())
 
         if id_team==1:
+            #prend sa position de base
             if  s.ball.x>2*GAME_WIDTH/5:# s.fnorme<s.enorme:  
-                return SoccerAction((Vector2D(GAME_WIDTH/7,s.test)-s.player),Vector2D())
+                return SoccerAction((Vector2D(GAME_WIDTH/7,s.aligne_def)-s.player),Vector2D())
+            #eloigne l'adversaire en tirant dans les coins
+            elif s.ball.x<GAME_WIDTH/5 and s.ball.y<55 and s.ball.y>35 and s.pos_eproche.x<GAME_WIDTH/5 and s.pos_eproche.y>35 and s.pos_eproche.y<55:
+                if s.norme>PLAYER_RADIUS+BALL_RADIUS:
+                    return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
+                if s.pos_eproche.y<(GAME_HEIGHT/2):
+                    return SoccerAction((s.ball+4*s.vball-s.player),(Vector2D(0,GAME_HEIGHT)).normalize()*3)
+                else:
+                    return SoccerAction((s.ball+4*s.vball-s.player),(Vector2D(0,0).normalize()*3))
+            #mode gardien en attendant la balle
+            elif s.ball.x<GAME_WIDTH/5 and s.ball.y<35:
+                return SoccerAction((Vector2D(s.aligne_def_y,35)-s.player),Vector2D())
+            elif s.ball.x<GAME_WIDTH/5 and s.ball.y>55:
+                return SoccerAction((Vector2D(s.aligne_def_y,55)-s.player),Vector2D())
+            #contre attaque
+            elif elif s.ball.x<GAME_WIDTH/5 and s.ball.y<55 and s.ball.y>35 and s.pos_eproche.x<GAME_WIDTH/5 and (s.pos_eproche.y<35 or s.pos_eproche.y>55):
                 
         if id_team==2:
             if s.ball.x<3*GAME_WIDTH/5:# s.fnorme<s.enorme:
-                return SoccerAction((Vector2D(6*GAME_WIDTH/7,s.test)-s.player),Vector2D())
+                return SoccerAction((Vector2D(6*GAME_WIDTH/7,s.aligne_def)-s.player),Vector2D())
             
         if s.norme>PLAYER_RADIUS+BALL_RADIUS:
             return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
