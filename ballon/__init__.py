@@ -15,9 +15,12 @@ def get_team ( nb_players ):
     if nb_players == 2:
         team.add("defenseur",joueur_defenseur())
         team.add("attaquant",joueur_attaquant())
+
+
     if nb_players == 3:
-        team.add("defenseur",joueur_fonceur())
-        team.add("attaquant",joueur_attaquant())
+        team.add("defenseur",joueur_unedeux())
+        team.add("attaquant",joueur_unedeux())
+  
     if nb_players == 4:
         team.add("neymar" , joueur_fonceur())
     return team

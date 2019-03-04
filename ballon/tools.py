@@ -14,6 +14,21 @@ class SuperState(object):
             self.id_team = id_team
             self.id_player = id_player
         @property
+        def cannot(self):
+            if self.norme>PLAYER_RADIUS+BALL_RADIUS:
+                return True
+            else:
+                return False
+        @property
+        def milieu(self):
+            if self.ball.x==GAME_WIDTH/2 and self.ball.y==GAME_HEIGHT/2:
+                return True 
+            else:
+                return False
+        @property
+        def ide(self):
+            return self.id_player
+        @property
         def ball(self):
             return self.state.ball.position
         @property
@@ -37,8 +52,8 @@ class SuperState(object):
             n=len(self.state.players)/2
             v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
             while i<n:
-                if 0<math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-self.goal.x)**2+(self.state.player_state(self.id_team%2+1,i).position.y-self.goal.y)**2) and (math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-self.goal.x)**2+(self.state.player_state(self.id_team%2+1,i).position.y-self.goal.y)**2))<math.sqrt(v.x**2+v.y**2):
-                    v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-self.goal.x,self.state.player_state(self.id_team%2+1,i).position.y-self.goal.y)
+                if 0<(math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-(self.id_team%2+1)*GAME_WIDTH)**2+(self.state.player_state(self.id_team%2+1,i).position.y-GAME_HEIGHT/2)**2)) and (math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-(self.id_team%2+1)*GAME_WIDTH)**2+(self.state.player_state(self.id_team%2+1,i).position.y-GAME_HEIGHT/2)**2))<math.sqrt(v.x**2+v.y**2):
+                    v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-(self.id_team%2)*GAME_WIDTH,self.state.player_state(self.id_team%2+1,i).position.y-GAME_HEIGHT/2)
                 i=i+1
             return math.sqrt(v.x**2+v.y**2)
         @property
@@ -80,9 +95,8 @@ class SuperState(object):
             while i<n:
                 if (math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)**2)<math.sqrt(v.x**2+v.y**2)):
                     v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-self.player.x,self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)
-                    j=self.state.player_state(self.id_team%2+1,i).position
                 i=i+1
-            return j
+            return v
                 
             
         @property
@@ -119,10 +133,22 @@ class SuperState(object):
         @property
         def enemy1v1(self):
             if self.id_team==1:
-                return state.player_state(2,0).position
+                return self.state.player_state(2,0).position
             else:
-                return state.player_state(1,0).position
-            
+                return self.state.player_state(1,0).position
+        @property
+        def unedeux(self):
+            if self.id_team==1:
+                if(self.id_player==0):
+                    return self.state.player_state(1,1).position
+                else:
+                    return self.state.player_state(1,0).position
+            else:
+                if(self.id_player==1):
+                    return self.state.player_state(2,1).position
+                else:
+                    return self.state.player_state(2,0).position
+
         #@property
         """def pgoal(self):
             if self.id_team==1:
