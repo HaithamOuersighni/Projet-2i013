@@ -29,6 +29,9 @@ class SuperState(object):
         def ide(self):
             return self.id_player
         @property
+        def step(self):
+            return self.state.step
+        @property
         def ball(self):
             return self.state.ball.position
         @property
@@ -95,8 +98,9 @@ class SuperState(object):
             while i<n:
                 if (math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)**2)<math.sqrt(v.x**2+v.y**2)):
                     v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-self.player.x,self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)
+                    j=self.state.player_state(self.id_team%2+1,i).position
                 i=i+1
-            return v
+            return j
                 
             
         @property
