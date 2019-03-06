@@ -103,19 +103,22 @@ class SuperState(object):
             return j
                 
             
-        @property
-        def fproche(self):
+        @property 
+        def fproche(self): #donne le vecteur position de l'allier le plus proche
             i=0
             n=len(self.state.players)/2
-            v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            #v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
             while i<n:
-                if 0<(math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and (math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)<math.sqrt(v.x**2+v.y**2))):
+                if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player:
+                #if 0<(math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and (math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)<math.sqrt(v.x**2+v.y**2))):
                     v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                    dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
                 i=i+1
             return v
         
         @property
-        def aligne_def(self): #s'aligne entre la balle et les cage pour un x donné
+        def aligne_def(self): #s'aligne entre la balle et les cage pour un x donné : y=ax+b
             if self.id_team==1:
                 a=(self.ball.y-45)/self.ball.x
                 b=45
@@ -125,7 +128,7 @@ class SuperState(object):
             return a*self.player.x+b
         
         @property
-        def aligne_def_y(self): #s'aligne entre la balle et les cage pour un y donné
+        def aligne_def_y(self): #s'aligne entre la balle et les cage pour un y donné : x=y-b/a
             if self.id_team==1:
                 a=(self.ball.y-45)/self.ball.x
                 b=45

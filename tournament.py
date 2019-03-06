@@ -1,4 +1,4 @@
-from ballon import joueur_fonceur, joueur_attaquant, joueur_defenseur2 ,joueur_defenseur, joueur_fonceur2,alfonseur,joueur_unedeux, get_team
+from ballon import joueur_fonceur,alfonseur,joueur_attaquant,joueur_defenseur,joueur_defenseur2,joueur_unedeux,get_team
 from soccersimulator import SoccerTeam
 
 """def get_team ( nb_players ):
