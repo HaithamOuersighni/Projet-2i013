@@ -81,7 +81,6 @@ class alfonseur(Strategy):
                         return SoccerAction((s.ball-s.player),(Vector2D(0,0)-s.player).normalize()*3)
                     
                 elif s.ball.y<30 and s.ball.x<GAME_WIDTH/4 and s.pos_eproche.y<30 and s.pos_eproche.x>s.player.x or s.enorme<s.norme:
-                    print(Vector2D(s.aligne_def_y,30)-s.player)
                     return SoccerAction((Vector2D(s.aligne_def_y,30)-s.player),Vector2D())
                 
                 elif s.ball.y>60 and s.ball.x<GAME_WIDTH/4 and s.pos_eproche.y>60 and s.pos_eproche.x>s.player.x or s.enorme<s.norme:
@@ -96,7 +95,35 @@ class alfonseur(Strategy):
                 return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
             else:
                 return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize())
+        else:
+            if s.ball.x>3*GAME_WIDTH/4:
+                if s.ball.y>30 and s.ball.y<60 and s.pos_eproche.y>30 and s.pos_eproche.y<60 and s.pos_eproche.x<s.player.x and (s.pos_eproche.y-s.player.y<10):
+                    if s.cannot:
+                        return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
+                    elif s.ball.y>(GAME_HEIGHT/2):
+                        return SoccerAction((s.ball-s.player),(Vector2D(GAME_WIDTH,GAME_HEIGHT)-s.player).normalize()*3)
+                    else:
+                        return SoccerAction((s.ball-s.player),(Vector2D(GAME_WIDTH,0)-s.player).normalize()*3)
+                    
+                elif s.ball.y<30 and s.ball.x>3*GAME_WIDTH/4 and s.pos_eproche.y<30 and s.pos_eproche.x<s.player.x or s.enorme<s.norme:
+                    return SoccerAction((Vector2D(s.aligne_def_y,30)-s.player),Vector2D())
                 
+                elif s.ball.y>60 and s.ball.x>3*GAME_WIDTH/4 and s.pos_eproche.y>60 and s.pos_eproche.x<s.player.x or s.enorme<s.norme:
+                    return SoccerAction((Vector2D(s.aligne_def_y,60)-s.player),Vector2D())
+                
+                elif (s.ball.y>30 and s.pos_eproche.y<30 and s.ball.x>3*GAME_WIDTH/4 and s.pos_eproche.x>3*GAME_WIDTH/4 and s.norme<s.enorme) or (s.ball.y< 60 and s.pos_eproche.y>60 and s.ball.x>3*GAME_WIDTH/4 and s.pos_eproche.x>3*GAME_WIDTH/4 and s.norme<s.enorme):
+                    if s.cannot:
+                        return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
+                    else:
+                        return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize()*6)
+            if s.cannot:
+                return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
+            else:
+                return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize())
+            
+            
+            
+            
                 
 class joueur_attaquant(Strategy):
      def __init__(self):
