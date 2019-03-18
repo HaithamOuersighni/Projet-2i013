@@ -1,4 +1,4 @@
-from ballon import joueur_fonceur,alfonseur,joueur_attaquant,joueur_defenseur,joueur_defenseur2,joueur_unedeux,get_team
+from ballon import joueur_fonceur,alfonseur,joueur_attaquant,joueur_defenseur,joueur_defenseur2,joueur_unedeux,get_team, joueur_attaquant2
 from soccersimulator import SoccerTeam
 
 """def get_team ( nb_players ):
@@ -17,8 +17,8 @@ if __name__ == '__main__':
     from soccersimulator import Simulation , show_simu
 
     # Check teams with 1 player and 2 players
-    team1 = get_team(1)
-    team2 = get_team(2)
+    team1 = get_team(3)
+    team2 = get_team(4)
 
     # Create a match
     simu = Simulation(team1,team2)

@@ -44,23 +44,23 @@ class SuperState(object):
         def goal(self):
             return Vector2D((self.id_team%2)*GAME_WIDTH,GAME_HEIGHT/2)
         @property
-        def norme(self):
+        def norme(self): #distance entre le joueur et la balle
             return math.sqrt((self.ball.x-self.player.x)**2+(self.ball.y-self.player.y)**2)
         @property
-        def gnorme(self):
+        def gnorme(self): #distance joueur et goal adverse
             return math.sqrt(((self.id_team%2)*GAME_WIDTH-self.player.x)**2+(45-self.player.y)**2)
         @property
-        def cnorme(self):
+        def cnorme(self): #distance entre l'attaquant adverse le plus proche de nos cages
             i=0
             n=len(self.state.players)/2
             v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
             while i<n:
                 if 0<(math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-(self.id_team%2+1)*GAME_WIDTH)**2+(self.state.player_state(self.id_team%2+1,i).position.y-GAME_HEIGHT/2)**2)) and (math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-(self.id_team%2+1)*GAME_WIDTH)**2+(self.state.player_state(self.id_team%2+1,i).position.y-GAME_HEIGHT/2)**2))<math.sqrt(v.x**2+v.y**2):
-                    v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-(self.id_team%2)*GAME_WIDTH,self.state.player_state(self.id_team%2+1,i).position.y-GAME_HEIGHT/2)
+                    v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-(self.id_team%2+1)*GAME_WIDTH,self.state.player_state(self.id_team%2+1,i).position.y-GAME_HEIGHT/2)
                 i=i+1
             return math.sqrt(v.x**2+v.y**2)
         @property
-        def fnorme(self):
+        def fnorme(self): #distance entre le joueur et l'allier le plus proche
             i=0
             n=len(self.state.players)/2
             v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
@@ -70,7 +70,7 @@ class SuperState(object):
                 i=i+1
             return math.sqrt(v.x**2+v.y**2)
         @property
-        def enorme(self): #distance ball et adversaire
+        def enorme(self): #distance balle et adversaire
             i=0
             n=len(self.state.players)/2
             v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
@@ -80,7 +80,7 @@ class SuperState(object):
                 i=i+1
             return math.sqrt(v.x**2+v.y**2)
         @property
-        def eproche(self):
+        def eproche(self): #distance entre nous et l'adversaire le plus proche
             i=0
             n=len(self.state.players)/2
             v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
@@ -107,16 +107,25 @@ class SuperState(object):
         def fproche(self): #donne le vecteur position de l'allier le plus proche
             i=0
             n=len(self.state.players)/2
-            #v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
             dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
             while i<n:
                 if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player:
-                #if 0<(math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and (math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)<math.sqrt(v.x**2+v.y**2))):
                     v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
                     dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
                 i=i+1
             return v
         
+        @property
+        def fprocheatk(self): #donne le vecteur position de l'attaquant le plus proche
+            i=2
+            n=4
+            dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
+            while i<n:
+                if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player:
+                    v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                    dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
+                i=i+1
+            return v
         @property
         def aligne_def(self): #s'aligne entre la balle et les cage pour un x donné : y=ax+b
             if self.id_team==1:
@@ -138,7 +147,23 @@ class SuperState(object):
             return (self.player.y-b)/a
         
         @property
-        def enemy1v1(self):
+        def defadv(self): #retourne la position du defenseur adverse
+            i=0
+            n=len(self.state.players)/2
+            v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            while i<n:
+                if math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-((self.id_team%2+1)%2)*GAME_WIDTH)**2+(self.state.player_state(self.id_team%2+1,i).position.y-GAME_HEIGHT/2)**2) < math.sqrt(v.x**2+v.y**2):
+                    v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-((self.id_team%2+1)%2)*GAME_WIDTH,self.state.player_state(self.id_team%2+1,i).position.y-GAME_HEIGHT/2)
+                    res=self.state.player_state(self.id_team%2+1,i).position
+                i=i+1
+            return res
+        
+        @property
+        def distgb(self): #retourne la distance entre la balle et notre goal
+            return math.sqrt((self.state.player_state(self.id_team,3).position.x-self.ball.x)**2+(self.state.player_state(self.id_team,3).position.y-self.ball.y)**2)
+        
+        @property
+        def enemy1v1(self): #renvoi la position de l'adversaire dans le cas d'un 1vs1
             if self.id_team==1:
                 return self.state.player_state(2,0).position
             else:
@@ -146,15 +171,15 @@ class SuperState(object):
         @property
         def unedeux(self):
             if self.id_team==1:
-                if(self.id_player==0):
-                    return self.state.player_state(1,1).position
+                if(self.id_player==2):
+                    return self.state.player_state(1,3).position
                 else:
-                    return self.state.player_state(1,0).position
+                    return self.state.player_state(1,2).position
             else:
-                if(self.id_player==1):
-                    return self.state.player_state(2,1).position
+                if(self.id_player==2):
+                    return self.state.player_state(2,3).position
                 else:
-                    return self.state.player_state(2,0).position
+                    return self.state.player_state(2,2).position
 
         #@property
         """def pgoal(self):
