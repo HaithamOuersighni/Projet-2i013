@@ -39,11 +39,11 @@ class QStrategy( Strategy ):
             else :
                 return SoccerAction()
     @property
-        def strategy_names ( self ):
+        def strategy_names( self ):
             return self.strategies.keys ()
     @property
-        def strategy ( self ):
+        def strategy( self ):
             return self.current_strategy
     @strategy.setter
-        def strategy ( self , name ):
+        def strategy( self , name ):
             self.current_strategy=name

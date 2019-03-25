@@ -238,7 +238,7 @@ class joueur_goal(Strategy):
         s=SuperState(state,id_team,id_player)
         if id_team==1:
             if s.ball.x>GAME_WIDTH/3:
-                return SoccerAction(Vector2D(GAME_WIDTH/10,s.aligne_def)-s.player,Vector2D())
+                return SoccerAction(Vector2D(GAME_WIDTH/20,s.aligne_def)-s.player,Vector2D())
             else:
                 if s.norme>s.enorme and s.ball.x>GAME_WIDTH/9:
                     return SoccerAction(Vector2D(GAME_WIDTH/10,s.aligne_def)-s.player,Vector2D())
@@ -252,7 +252,7 @@ class joueur_goal(Strategy):
                 return SoccerAction(Vector2D(9*GAME_WIDTH/10,s.aligne_def)-s.player,Vector2D())
             else:
                 if s.norme>s.enorme and s.ball.x<8*GAME_WIDTH/9:
-                    return SoccerAction(Vector2D(9*GAME_WIDTH/10,s.aligne_def)-s.player,Vector2D())
+                    return SoccerAction(Vector2D(19*GAME_WIDTH/20,s.aligne_def)-s.player,Vector2D())
                 else:
                     if s.cannot:
                         return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
@@ -270,7 +270,7 @@ class joueur_defenseur(Strategy):
         s=SuperState(state,id_team,id_player)
         if id_team==1:
             if s.ball.x>GAME_WIDTH/2+1:
-                return SoccerAction((Vector2D(GAME_WIDTH/4,s.aligne_def)-s.player),Vector2D())
+                return SoccerAction((Vector2D(GAME_WIDTH/3,s.aligne_def)-s.player),Vector2D())
             elif s.distgb>s.norme:                    
                 if s.cannot:
                     return SoccerAction((s.ball-s.player),Vector2D())
@@ -280,7 +280,7 @@ class joueur_defenseur(Strategy):
                 return SoccerAction((Vector2D(GAME_WIDTH/4,s.ball.y)-s.player),Vector2D())
         else:
             if s.ball.x<GAME_WIDTH/2:
-                return SoccerAction((Vector2D(3*GAME_WIDTH/4,s.aligne_def)-s.player),Vector2D())
+                return SoccerAction((Vector2D(2*GAME_WIDTH/3,s.aligne_def)-s.player),Vector2D())
             elif s.distgb>s.norme:                    
                 if s.cannot:
                     return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
