@@ -161,11 +161,11 @@ class joueur_unedeux(Strategy):
             p=-10
         if s.ide==2:
             if s.milieu:
-                return SoccerAction((s.ball-s.player),Vector2D(s.unedeux.x-s.player.x+p,s.unedeux.y-s.player.y).normalize()*2)
-            elif s.ball.x<GAME_WIDTH/2 and id_team==1:
-                return SoccerAction(Vector2D(GAME_WIDTH/2,2*GAME_HEIGHT/5)-s.player,Vector2D())
-            elif s.ball.x>GAME_WIDTH/2 and id_team==2:
-                return SoccerAction(Vector2D(GAME_WIDTH/2,2*GAME_HEIGHT/5)-s.player,Vector2D())
+                return SoccerAction((s.ball-s.player),Vector2D(s.unedeux.x-s.player.x,s.unedeux.y-s.player.y).normalize())
+            elif s.ball.x<GAME_WIDTH/3 and id_team==1:
+                return SoccerAction(Vector2D(GAME_WIDTH/3,2*GAME_HEIGHT/5)-s.player,Vector2D())
+            elif s.ball.x>2*GAME_WIDTH/3 and id_team==2:
+                return SoccerAction(Vector2D(2*GAME_WIDTH/3,2*GAME_HEIGHT/5)-s.player,Vector2D())
             
             elif  s.ball.y>GAME_HEIGHT/2:
                 if(s.ball.x<(5*GAME_WIDTH/6)-15 and id_team==1) or (s.ball.x>(GAME_WIDTH/6)+15 and id_team==2):
@@ -184,14 +184,14 @@ class joueur_unedeux(Strategy):
                 
         if s.ide==3:
             if s.milieu:
-                  return SoccerAction((Vector2D(s.ball.x,65)-s.player),Vector2D())
+                  return SoccerAction((Vector2D(s.ball.x,60)-s.player),Vector2D())
             
-            elif s.ball.x<GAME_WIDTH/2 and id_team==1:
-                return SoccerAction(Vector2D(GAME_WIDTH/2,3*GAME_HEIGHT/5)-s.player,Vector2D())
-            elif s.ball.x>GAME_WIDTH/2 and id_team==2:
-                return SoccerAction(Vector2D(GAME_WIDTH/2,3*GAME_HEIGHT/5)-s.player,Vector2D())
+            elif s.ball.x<GAME_WIDTH/3 and id_team==1:
+                return SoccerAction(Vector2D(GAME_WIDTH/3,3*GAME_HEIGHT/5)-s.player,Vector2D())
+            elif s.ball.x>2*GAME_WIDTH/3 and id_team==2:
+                return SoccerAction(Vector2D(2*GAME_WIDTH/3,3*GAME_HEIGHT/5)-s.player,Vector2D())
             
-            elif s.ball.y<GAME_HEIGHT/2:
+            elif s.ball.y<GAME_HEIGHT/3:
                return SoccerAction((Vector2D(s.ball.x,50)-s.player),Vector2D())
             else:
                if (s.eproche>20):
@@ -275,7 +275,7 @@ class joueur_defenseur(Strategy):
                 if s.cannot:
                     return SoccerAction((s.ball-s.player),Vector2D())
                 else:
-                    return SoccerAction((s.ball-s.player),s.fprocheatk.normalize()*2)
+                    return SoccerAction((s.ball-s.player),s.fprocheatk.normalize()*3)
             else:
                 return SoccerAction((Vector2D(GAME_WIDTH/4,s.ball.y)-s.player),Vector2D())
         else:
@@ -285,7 +285,7 @@ class joueur_defenseur(Strategy):
                 if s.cannot:
                     return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
                 else:
-                    return SoccerAction((s.ball-s.player),s.fprocheatk.normalize()*2)
+                    return SoccerAction((s.ball-s.player),s.fprocheatk.normalize()*3)
             else:
                 return SoccerAction((Vector2D(3*GAME_WIDTH/4,s.ball.y)-s.player),Vector2D())
 
