@@ -16,13 +16,13 @@ def get_team ( nb_players ):
         team.add("umtiti",joueur_defenseur2())
         team.add("zizou" ,joueur_attaquant2())
         
-    if nb_players == 3:
+    if nb_players == 4:
         team.add("umtiti", joueur_defenseur())
         team.add("lloris", joueur_goal())
         team.add("zizou",joueur_unedeux())
         team.add("trezeguet",joueur_unedeux())
   
-    if nb_players == 4:
+    if nb_players == 3:
         team.add("mbappe",joueur_attaquant())
         team.add("mbappe",joueur_attaquant())
         team.add("pavard",joueur_defenseur2())
