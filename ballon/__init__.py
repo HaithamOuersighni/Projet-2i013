@@ -14,7 +14,7 @@ def get_team ( nb_players ):
         team.add("alfonse", alfonseur())
     if nb_players == 2:
         team.add("umtiti",joueur_defenseur2())
-        team.add("zizou" ,joueur_attaquant2())
+        team.add("zizou" ,joueur_attaquant())
         
     if nb_players == 4:
         team.add("umtiti", joueur_defenseur())
