@@ -25,6 +25,6 @@ def get_team ( nb_players ):
     if nb_players == 3:
         team.add("mbappe",joueur_attaquant())
         team.add("mbappe",joueur_attaquant())
-        team.add("pavard",joueur_defenseur2())
+        team.add("pavard",joueur_goal())
         team.add("pavard",joueur_defenseur2())
     return team

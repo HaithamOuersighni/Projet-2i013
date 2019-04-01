@@ -50,7 +50,7 @@ class SuperState(object):
         def gnorme(self): #distance joueur et goal adverse
             return math.sqrt(((self.id_team%2)*GAME_WIDTH-self.player.x)**2+(45-self.player.y)**2)
         @property
-        def cnorme(self): #distance entre l'attaquant adverse le plus proche de nos cages
+        def cnorme(self): #distance entre l'attaquant adverse le plus proche et nos cages
             i=0
             n=len(self.state.players)/2
             v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
@@ -66,6 +66,16 @@ class SuperState(object):
             v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
             while i<n:
                 if 0<(math.sqrt((self.state.player_state(self.id_team,i).position.x-self.ball.x)**2+(self.state.player_state(self.id_team,i).position.y-self.ball.y)**2) and (math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)<math.sqrt(v.x**2+v.y**2))):
+                    v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.ball.x,self.state.player_state(self.id_team,i).position.y-self.ball.y)
+                i=i+1
+            return math.sqrt(v.x**2+v.y**2)
+        @property
+        def fbnorme(self): #distance la plus courte entre la balle et un alliee 
+            i=0
+            n=len(self.state.players)/2
+            v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            while i<n:
+                if (math.sqrt((self.state.player_state(self.id_team,i).position.x-self.ball.x)**2+(self.state.player_state(self.id_team,i).position.y-self.ball.y)**2)<math.sqrt(v.x**2+v.y**2)):
                     v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.ball.x,self.state.player_state(self.id_team,i).position.y-self.ball.y)
                 i=i+1
             return math.sqrt(v.x**2+v.y**2)
@@ -108,11 +118,18 @@ class SuperState(object):
             i=0
             n=len(self.state.players)/2
             dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
-            while i<n:
-                if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player:
-                    v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
-                    dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
-                i=i+1
+            if self.id_team==1:  
+                while i<n:
+                    if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player and self.state.player_state(self.id_team,i).position.x>self.player.x:
+                        v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                        dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
+                    i=i+1
+            else:
+                while i<n:
+                    if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player and self.state.player_state(self.id_team,i).position.x<self.player.x:
+                        v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                        dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
+                    i=i+1
             return v
         
         @property
@@ -122,9 +139,14 @@ class SuperState(object):
             dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
             while i<n:
                 if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player:
-                    v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
-                    dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
+                   if i==2:
+                       tmp=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                   if eproche(self.state.player_state(self.id_team,i))>15:
+                        v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                        dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
                 i=i+1
+                if v>Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y):
+                    v=tmp
             return v
         @property
         def aligne_def(self): #s'aligne entre la balle et les cage pour un x donné : y=ax+b
