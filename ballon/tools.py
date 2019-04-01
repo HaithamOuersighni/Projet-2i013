@@ -132,6 +132,52 @@ class SuperState(object):
                     i=i+1
             return v
         
+        """@property
+        def fprocheatk(self): #donne le vecteur position de l'attaquant le plus proche
+            i=2 # a partir des 2 attaquant
+            n=4
+            j=0
+            dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
+            while i<n:
+                if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player:
+                    dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
+                    
+                    ve=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+                    while j<n:
+                       if (math.sqrt((self.state.player_state(self.id_team%2+1,j).position.x-self.state.player_state(self.id_team,i).position.x)**2+(self.state.player_state(self.id_team%2+1,j).position.y-self.player.y)**2)<math.sqrt(ve.x**2+ve.y**2)):
+                           ve=Vector2D(self.state.player_state(self.id_team%2+1,j).position.x-self.state.player_state(self.id_team,i).position.x,self.state.player_state(self.id_team%2+1,j).position.y-self.state.player_state(self.id_team,i).position.y)
+                           j=j+1
+                    j=0
+                    
+                    if i==2:
+                       tmp=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                       distfe=math.sqrt(ve.x**2+ve.y**2) 
+                    else :
+                       tmp2=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                       distfe2=math.sqrt(ve.x**2+ve.y**2)
+                    
+            if tmp<tmp2 && distfe>distfe2:
+                return tmp"""
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
         @property
         def fprocheatk(self): #donne le vecteur position de l'attaquant le plus proche
             i=2
@@ -139,15 +185,11 @@ class SuperState(object):
             dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
             while i<n:
                 if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player:
-                   if i==2:
-                       tmp=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
-                   if eproche(self.state.player_state(self.id_team,i))>15:
-                        v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
-                        dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
+                    v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                    dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
                 i=i+1
-                if v>Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y):
-                    v=tmp
-            return v
+            return v            
+                  
         @property
         def aligne_def(self): #s'aligne entre la balle et les cage pour un x donné : y=ax+b
             if self.id_team==1:
@@ -256,8 +298,8 @@ class Shoot ( Decorator ):
 class Passe ( Decorator ):
     def __init__ ( self , state ):
         Decorator . __init__ ( self , state )        
-    def passe ( self , p ):
-        return SoccerAction ( Vector2D (...))
+    #   def passe ( self , p ):
+        #return SoccerAction ( Vector2D (...))
 class Move(object):
     def __init__(self,state):
         self.state=state
