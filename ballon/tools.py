@@ -131,65 +131,37 @@ class SuperState(object):
                         dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
                     i=i+1
             return v
-        
-        """@property
+        @property
         def fprocheatk(self): #donne le vecteur position de l'attaquant le plus proche
             i=2 # a partir des 2 attaquant
             n=4
             j=0
-            dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
             while i<n:
-                if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player:
-                    dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
+                
+                ve=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+                while j<n:
+                   if (math.sqrt((self.state.player_state(self.id_team%2+1,j).position.x-self.state.player_state(self.id_team,i).position.x)**2+(self.state.player_state(self.id_team%2+1,j).position.y-self.state.player_state(self.id_team,i).position.y)**2)<math.sqrt(ve.x**2+ve.y**2)):
+                       ve=Vector2D(self.state.player_state(self.id_team%2+1,j).position.x-self.state.player_state(self.id_team,i).position.x,self.state.player_state(self.id_team%2+1,j).position.y-self.state.player_state(self.id_team,i).position.y)
+                       j=j+1
+                j=0
+                
+                if i==2:
+                   tmp=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                   distfe=math.sqrt(ve.x**2+ve.y**2) 
+                else :
+                   tmp2=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
+                   distfe2=math.sqrt(ve.x**2+ve.y**2)
                     
-                    ve=Vector2D(GAME_WIDTH,GAME_HEIGHT)
-                    while j<n:
-                       if (math.sqrt((self.state.player_state(self.id_team%2+1,j).position.x-self.state.player_state(self.id_team,i).position.x)**2+(self.state.player_state(self.id_team%2+1,j).position.y-self.player.y)**2)<math.sqrt(ve.x**2+ve.y**2)):
-                           ve=Vector2D(self.state.player_state(self.id_team%2+1,j).position.x-self.state.player_state(self.id_team,i).position.x,self.state.player_state(self.id_team%2+1,j).position.y-self.state.player_state(self.id_team,i).position.y)
-                           j=j+1
-                    j=0
-                    
-                    if i==2:
-                       tmp=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
-                       distfe=math.sqrt(ve.x**2+ve.y**2) 
-                    else :
-                       tmp2=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
-                       distfe2=math.sqrt(ve.x**2+ve.y**2)
-                    
-            if tmp<tmp2 && distfe>distfe2:
-                return tmp"""
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-        @property
-        def fprocheatk(self): #donne le vecteur position de l'attaquant le plus proche
-            i=2
-            n=4
-            dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
-            while i<n:
-                if dmax>math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2) and i!=self.id_player:
-                    v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.player.x,self.state.player_state(self.id_team,i).position.y-self.player.y)
-                    dmax=math.sqrt((self.state.player_state(self.id_team,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team,i).position.y-self.player.y)**2)
-                i=i+1
-            return v            
-                  
+            if tmp<tmp2:
+                if distfe>15:
+                    return tmp
+                else:
+                    return tmp2
+            else:
+                if distfe2>15:
+                    return tmp2
+                else:
+                    return tmp
         @property
         def aligne_def(self): #s'aligne entre la balle et les cage pour un x donné : y=ax+b
             if self.id_team==1:
@@ -244,7 +216,85 @@ class SuperState(object):
                     return self.state.player_state(2,3).position
                 else:
                     return self.state.player_state(2,2).position
-
+        @property
+        def posxatk(self):
+            if self.id_player==2:
+                return self.state.player_state(self.id_team,3).position.x
+            else:
+                return self.state.player_state(self.id_team,2).position.x
+        @property
+        def posyatk(self):
+            if self.id_player==2:
+                return self.state.player_state(self.id_team,3).position.y
+            else:
+                return self.state.player_state(self.id_team,2).position.y
+        @property
+        def posdef(self):
+            return self.state.player_state(self.id_team,1).position
+        @property
+        def possede(self):#retourne true si la balle est plus proche d'un membre de notre equipe ou false sinon
+            i=0
+            j=1
+            dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
+            while j<3:
+                while i<4:
+                    if math.sqrt((self.state.player_state(j,i).position.x-self.ball.x)**2+(self.state.player_state(j,i).position.y-self.ball.y)**2)<dmax:
+                        dmax=math.sqrt((self.state.player_state(j,i).position.x-self.ball.x)**2+(self.state.player_state(j,i).position.y-self.ball.y)**2)
+                        equipe=j
+                    i=i+1
+                j=j+1
+                i=0
+            if equipe==self.id_team:
+                return True
+            return False
+        @property
+        def abnorme(self):# retourne true si on est le plus proche de la balle
+            i=0
+            v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            while i<4:
+                if (math.sqrt((self.state.player_state(self.id_team,i).position.x-self.ball.x)**2+(self.state.player_state(self.id_team,i).position.y-self.ball.y)**2)<math.sqrt(v.x**2+v.y**2)):
+                    v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.ball.x,self.state.player_state(self.id_team,i).position.y-self.ball.y)
+                    j=i
+                i=i+1
+            if j==self.id_player:
+                return True
+            return False
+        @property
+        def defadv4(self):#retourne la position du defenseur adverse dans le cas d'un 4V4
+            v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            s=(self.id_team%2+1)-1
+            j0=math.sqrt((self.state.player_state(self.id_team%2+1,0).position.x-s*GAME_WIDTH)**2+(self.state.player_state(self.id_team%+1,0).position.y-GAME_HEIGHT/2)**2)
+            j1=math.sqrt((self.state.player_state(self.id_team%2+1,1).position.x-s*GAME_WIDTH)**2+(self.state.player_state(self.id_team%+1,1).position.y-GAME_HEIGHT/2)**2)
+            j2=math.sqrt((self.state.player_state(self.id_team%2+1,2).position.x-s*GAME_WIDTH)**2+(self.state.player_state(self.id_team%+1,2).position.y-GAME_HEIGHT/2)**2)
+            j3=math.sqrt((self.state.player_state(self.id_team%2+1,3).position.x-s*GAME_WIDTH)**2+(self.state.player_state(self.id_team%+1,3).position.y-GAME_HEIGHT/2)**2)
+            if j0<j1 and j0<j2 and j0<j3:
+                if j1<j2 and j1<j3:
+                    return self.state.player_state(self.id_team%2+1,1).position
+                elif j2<j1 and j2<j3:
+                    return self.state.player_state(self.id_team%2+1,2).position
+                else:
+                    return self.state.player_state(self.id_team%2+1,3).position
+            elif j2<j1 and j2<j0 and j2<j3:
+                if j1<j0 and j1<j3:
+                    return self.state.player_state(self.id_team%2+1,1).position
+                elif j0<j1 and j0<j3:
+                    return self.state.player_state(self.id_team%2+1,0).position
+                else:
+                    return self.state.player_state(self.id_team%2+1,3).position
+            elif j1<j0 and j1<j2 and j1<j3:
+                if j0<j2 and j0<j3:
+                    return self.state.player_state(self.id_team%2+1,0).position
+                elif j2<j0 and j2<j3:
+                    return self.state.player_state(self.id_team%2+1,2).position
+                else:
+                    return self.state.player_state(self.id_team%2+1,3).position
+            else:
+                if j0<j2 and j0<j1:
+                    return self.state.player_state(self.id_team%2+1,0).position
+                elif j2<j0 and j2<j1:
+                    return self.state.player_state(self.id_team%2+1,2).position
+                else:
+                    return self.state.player_state(self.id_team%2+1,1).position
         #@property
         """def pgoal(self):
             if self.id_team==1:

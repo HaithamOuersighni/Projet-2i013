@@ -1,6 +1,6 @@
 from ballon import joueur_fonceur,alfonseur,joueur_attaquant,joueur_defenseur,joueur_defenseur2,joueur_unedeux,get_team, joueur_attaquant2
 from soccersimulator import SoccerTeam
-
+#import Nasser()
 """def get_team ( nb_players ):
     team = SoccerTeam(name=" ulysse's Team ")
     if nb_players == 1: 
@@ -25,3 +25,4 @@ if __name__ == '__main__':
 
     # Simulate and display the match
     show_simu(simu)
+()
