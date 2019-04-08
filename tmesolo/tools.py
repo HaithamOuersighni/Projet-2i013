@@ -220,6 +220,19 @@ class SuperState(object):
                     return self.state.player_state(2,3).position
                 else:
                     return self.state.player_state(2,2).position
+                
+        @property
+        def pos2v2(self):
+            if self.id_team==1:
+                if(self.id_player==0):
+                    return self.state.player_state(1,1).position
+                else:
+                    return self.state.player_state(1,0).position
+            else:
+                if(self.id_player==0):
+                    return self.state.player_state(2,1).position
+                else:
+                    return self.state.player_state(2,0).position
 
         #@property
         """def pgoal(self):

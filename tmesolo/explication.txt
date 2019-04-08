@@ -1,0 +1,32 @@
+question 2:
+
+	j'ai diviser la partie du terrain adverse en quatre, si l'adversaire se trouve dans l'une 		j'envoi la balle alors dans la partie opposer,
+
+	exemple s'il fait partie de la team 2 et qu'il se trouve dans la partie bas droite  : 		x>3*GAME_WIDTH/4 et y<GAME_HEIGHT/2, j'envoi alors la balle dans la zone x=GAME_WIDTH/2+10 		y=GAME_HEIGHT-15
+
+	s'il se trouve pres du filet je me fait alors une passe afin de me rapprocher du filet afin de 		pouvoir eloigner le plus possible la balle de lui par la suite.
+
+==============================================================================
+
+question 3:
+
+	Pour la defense j'alligne le joueur avec la balle sur la position y et je lui fixe un x en 		attendant que la balle entre dans son camps.
+
+
+===============================================================================
+
+question 4: 
+	
+	combinaison des explications aux 2 et 3
+
+===============================================================================
+
+question 5: 
+
+	pour le 2vs2 j'ai un peut modifier les roles d'attaque et de defense,
+
+	exemple pour la team 1 (symetriquement pour la team2)
+
+	attanquant : lorsque la balle est entre GAME_WIDTH/5 et 2*GAME_WIDTH/5 il va la chercher et 		tire dans le coin opposer de l'adversaire le plus proche. ajuste la puissance du tire selon le 		8eme de terrain visé, sinon reste a 2*GAME_WIDTH/5 a GAME_HEIGHT/2
+
+	defenseur : lorsque la position x de la balle est inférieur a GAME_WIDTH/5 il court la 		chercher et fait la passe a son attaquant.
