@@ -99,7 +99,18 @@ class SuperState(object):
                     v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-self.player.x,self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)
                 i=i+1
             return math.sqrt(v.x**2+v.y**2)
-        
+        @property
+        def eproche2v2(self): #distance entre nous et l'adversaire le plus proche devant
+            i=0
+            n=len(self.state.players)/2
+            v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            while i<n:
+                if (math.sqrt((self.state.player_state(self.id_team%2+1,i).position.x-self.player.x)**2+(self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)**2)<math.sqrt(v.x**2+v.y**2) and ((self.state.player_state(self.id_team%2+1,i).position.x > self.player.x and self.id_team==1) or (self.state.player_state(self.id_team%2+1,i).position.x < self.player.x and self.id_team==2))):
+                    v=Vector2D(self.state.player_state(self.id_team%2+1,i).position.x-self.player.x,self.state.player_state(self.id_team%2+1,i).position.y-self.player.y)
+                i=i+1
+            if math.sqrt(v.x**2+v.y**2)<=15:
+                return True
+            return False
         @property
         def pos_eproche(self): # retourne la position de l'ennemie le plus proche
             i=0
@@ -112,7 +123,12 @@ class SuperState(object):
                 i=i+1
             return j
                 
-            
+        @property
+        def allier2v2(self):
+            if self.id_player==0:
+                return Vector2D(self.state.player_state(self.id_team,1).position.x-self.player.x,self.state.player_state(self.id_team,1).position.y-self.player.y)
+            else: 
+                return Vector2D(self.state.player_state(self.id_team,0).position.x-self.player.x,self.state.player_state(self.id_team,0).position.y-self.player.y)
         @property 
         def fproche(self): #donne le vecteur position de l'allier le plus proche
             i=0
@@ -232,9 +248,27 @@ class SuperState(object):
         def posdef(self):
             return self.state.player_state(self.id_team,1).position
         @property
+        def possede2v2(self):#retourne true si la balle est plus proche d'un membre de notre equipe ou false sinon
+            i=0
+            j=1
+            equipe=9
+            dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
+            while j<3:
+                while i<2:
+                    if math.sqrt((self.state.player_state(j,i).position.x-self.ball.x)**2+(self.state.player_state(j,i).position.y-self.ball.y)**2)<dmax:
+                        dmax=math.sqrt((self.state.player_state(j,i).position.x-self.ball.x)**2+(self.state.player_state(j,i).position.y-self.ball.y)**2)
+                        equipe=j
+                    i=i+1
+                j=j+1
+                i=0
+            if equipe==self.id_team:
+                return True
+            return False
+        @property
         def possede(self):#retourne true si la balle est plus proche d'un membre de notre equipe ou false sinon
             i=0
             j=1
+            equipe=9
             dmax=math.sqrt((GAME_WIDTH)**2+(GAME_HEIGHT)**2)
             while j<3:
                 while i<4:
@@ -245,6 +279,18 @@ class SuperState(object):
                 j=j+1
                 i=0
             if equipe==self.id_team:
+                return True
+            return False
+        @property
+        def abnorme2v2(self):# retourne true si on est le plus proche de la balle
+            i=0
+            v=Vector2D(GAME_WIDTH,GAME_HEIGHT)
+            while i<2:
+                if (math.sqrt((self.state.player_state(self.id_team,i).position.x-self.ball.x)**2+(self.state.player_state(self.id_team,i).position.y-self.ball.y)**2)<math.sqrt(v.x**2+v.y**2)):
+                    v=Vector2D(self.state.player_state(self.id_team,i).position.x-self.ball.x,self.state.player_state(self.id_team,i).position.y-self.ball.y)
+                    j=i
+                i=i+1
+            if j==self.id_player:
                 return True
             return False
         @property
@@ -295,6 +341,10 @@ class SuperState(object):
                     return self.state.player_state(self.id_team%2+1,2).position
                 else:
                     return self.state.player_state(self.id_team%2+1,1).position
+                
+        #@property
+        #def defcoller(self):
+            
         #@property
         """def pgoal(self):
             if self.id_team==1:
@@ -326,7 +376,6 @@ class SuperState(object):
                 if x>150:
                     x=(-(-300+2*a*b-90*a))-math.sqrt(delta)/2*(1+a)
                 y=ax+b
-                
             return Vector2D(x,y)"""
             
 class Decorator():

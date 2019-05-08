@@ -1,4 +1,4 @@
-from ballon import joueur_fonceur,alfonseur,joueur_attaquant,joueur_defenseur,joueur_defenseur2,joueur_unedeux,get_team, joueur_attaquant2
+from ballon import joueur_fonceur,alfonseur,joueur_attaquant,joueur_defenseur,joueur_defenseur2,joueur_unedeux,get_team
 from soccersimulator import SoccerTeam
 #import Nasser()
 """def get_team ( nb_players ):
@@ -12,7 +12,7 @@ from soccersimulator import SoccerTeam
         team.add("attaquant",joueur_fonceur2())
     return team """
 
-
+()
 if __name__ == '__main__':
     from soccersimulator import Simulation , show_simu
 

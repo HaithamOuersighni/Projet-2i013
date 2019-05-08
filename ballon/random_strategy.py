@@ -94,35 +94,7 @@ class alfonseur(Strategy):
             else:
                 return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize())
             
-            
-    
-
-#attaquant 2.0         
-class joueur_attaquant2(Strategy):
-     def __init__(self):
-        Strategy.__init__(self, "Attaquant")
-        
-     def compute_strategy(self, state, id_team, id_player):
-        s=SuperState(state,id_team,id_player)
-        i=s.goal.x
-        if id_team==2: 
-           if  s.ball.x>2*GAME_WIDTH/3:
-               if s.ball.y>GAME_HEIGHT/2:
-                   return SoccerAction((Vector2D(2*GAME_WIDTH/3,s.ball.y+10)-s.player),Vector2D())
-               return SoccerAction((Vector2D(2*GAME_WIDTH/3,s.ball.y-10)-s.player),Vector2D())
-            
-            
-        if id_team==1:
-            if s.ball.x<GAME_WIDTH/3:
-                if s.ball.y<GAME_HEIGHT/2:
-                    return SoccerAction((Vector2D(GAME_WIDTH/3,s.ball.y+10)-s.player),Vector2D())
-                return SoccerAction((Vector2D(GAME_WIDTH/3,s.ball.y-10)-s.player),Vector2D())
-            #else:
-                #if s.defadv.x>=GAME_WIDTH/4:
-                
-        
-            
-#attaquant legerement améliorer            
+#attaquant 2v2 ameliorer qui met des crocher           
 class joueur_attaquant(Strategy):
     def __init__(self):
         Strategy.__init__(self, "Attaquant")
@@ -131,22 +103,50 @@ class joueur_attaquant(Strategy):
         s=SuperState(state,id_team,id_player)
         i=s.goal.x
         if id_team==2: 
-           if  s.ball.x>2*GAME_WIDTH/3:
-               if s.ball.y>GAME_HEIGHT/2:
-                   return SoccerAction((Vector2D(2*GAME_WIDTH/3,s.ball.y+10)-s.player),Vector2D())
-               return SoccerAction((Vector2D(2*GAME_WIDTH/3,s.ball.y-10)-s.player),Vector2D())
-        if id_team==1:
-            if s.ball.x<GAME_WIDTH/3:
-                if s.ball.y<GAME_HEIGHT/2:
-                    return SoccerAction((Vector2D(GAME_WIDTH/3,s.ball.y+10)-s.player),Vector2D())
-                return SoccerAction((Vector2D(GAME_WIDTH/3,s.ball.y-10)-s.player),Vector2D())
-        if s.cannot:
-            return SoccerAction((s.ball+4*s.vball-s.player),Vector2D())
-        if (s.player.x<6*GAME_WIDTH/7 and s.id_team==1)or(s.player.x>GAME_WIDTH/7 and s.id_team==2) or (s.cnorme>s.gnorme):
-            return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize())
-        else:
-            return SoccerAction((s.ball-s.player),Vector2D(i,GAME_HEIGHT/2)-s.player)
+            if  s.ball.x>3*GAME_WIDTH/4:
+                if s.possede2v2 and s.abnorme2v2:
+                    if s.cannot:
+                        return SoccerAction((s.ball-s.player),Vector2D())
+                    else:
+                        return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize())
+                elif s.ball.y<GAME_HEIGHT/2:
+                    return SoccerAction((Vector2D(3*GAME_WIDTH/4,s.ball.y+10)-s.player),Vector2D())
+                return SoccerAction((Vector2D(3*GAME_WIDTH/4,s.ball.y-10)-s.player),Vector2D())
+            elif s.cannot:
+                return SoccerAction((s.ball+4*s.vball-s.player),Vector2D())
+            elif s.ball.x<=GAME_WIDTH/5:
+                return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize()*5)
+            elif s.eproche2v2:
+                if s.player.y>GAME_HEIGHT/2:
+                    return SoccerAction((s.ball-s.player),(Vector2D(s.player.x-10,s.player.y+15)-s.player).normalize())
+                else:
+                    return SoccerAction((s.ball-s.player),(Vector2D(s.player.x-10,s.player.y-15)-s.player).normalize())
+            else:
+                return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize()*0.8)
+            
+        elif id_team==1:
+            if s.ball.x<GAME_WIDTH/4:
+                if s.possede2v2 and s.abnorme2v2:
+                    if s.cannot:
+                        return SoccerAction((s.ball-s.player),Vector2D())
+                    else:
+                        return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize())
+                elif s.ball.y<GAME_HEIGHT/2:
+                    return SoccerAction((Vector2D(GAME_WIDTH/4,s.ball.y+10)-s.player),Vector2D())
+                return SoccerAction((Vector2D(GAME_WIDTH/4,s.ball.y-10)-s.player),Vector2D())
+            elif s.cannot:
+               return SoccerAction((s.ball+4*s.vball-s.player),Vector2D())
+            elif s.ball.x>=4*GAME_WIDTH/5:
+                return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize()*5)
+            elif s.eproche2v2:
+                if s.player.y>GAME_HEIGHT/2:
+                    return SoccerAction((s.ball-s.player),(Vector2D(s.player.x+10,s.player.y+15)-s.player).normalize())
+                else:
+                    return SoccerAction((s.ball-s.player),(Vector2D(s.player.x+10,s.player.y-15)-s.player).normalize())
+            else:
+                return SoccerAction((s.ball-s.player),(Vector2D(i,GAME_HEIGHT/2)-s.player).normalize())
      
+
 #attaquant 4v4 v2 
 class attaquant1(Strategy):
      def __init__(self):
@@ -168,9 +168,9 @@ class attaquant1(Strategy):
                         return SoccerAction((s.ball-s.player),(s.unedeux-s.player))
                 elif s.player.x>3*GAME_WIDTH/5:
                     if s.player.y<GAME_HEIGHT/2:
-                        return SoccerAction((s.ball-s.player),Vector2D(10,10))
+                        return SoccerAction((s.ball-s.player),Vector2D(s.player.x+10,s.player.y+10))
                     else:
-                        return SoccerAction((s.ball-s.player),Vector2D(10,-10))
+                        return SoccerAction((s.ball-s.player),Vector2D(s.player.x+10,s.player.y-10))
                     #if s.player.y<GAME_HEIGHT/2:
                     #    return SoccerAction((s.ball-s.player),Vector2D(s.player.x+10,s.player.y+10)-s.player)
                     #else:
@@ -197,9 +197,9 @@ class attaquant1(Strategy):
                         return SoccerAction((s.ball-s.player),(s.unedeux-s.player))
                 elif s.player.x<2*GAME_WIDTH/5:
                     if s.player.y<GAME_HEIGHT/2:
-                        return SoccerAction((s.ball-s.player),Vector2D(s.player.x-10,s.player.y+10)-s.player)
+                        return SoccerAction((s.ball-s.player),(Vector2D(s.player.x-10,s.player.y+10)-s.player).normalize())
                     else:
-                        return SoccerAction((s.ball-s.player),Vector2D(s.player.x-10,s.player.y-10)-s.player)
+                        return SoccerAction((s.ball-s.player),(Vector2D(s.player.x-10,s.player.y-10)-s.player).normalize())
                 else:
                     return SoccerAction((s.ball-s.player),Vector2D(s.unedeux.x-15-s.player.x,s.unedeux.y-s.player.y))
             elif s.possede:
@@ -319,7 +319,7 @@ class joueur_unedeux(Strategy):
         return SoccerAction((s.ball-s.player),Vector2D(i,GAME_HEIGHT/2)-s.player)
     
 
-#joueur_defenceur ameliorer
+#joueur_defenceur ameliorer 2v2
 class joueur_defenseur2(Strategy):
      def __init__(self):
         Strategy.__init__(self, "Defenseur ameliorer")
@@ -334,7 +334,7 @@ class joueur_defenseur2(Strategy):
                 if s.cannot:
                     return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
                 else:
-                    return SoccerAction((s.ball-s.player),s.fproche.normalize()*3)
+                    return SoccerAction((s.ball-s.player),s.allier2v2.normalize()*3)
         else:
              if s.ball.x<2*GAME_WIDTH/3:
                 return SoccerAction((Vector2D(3*GAME_WIDTH/4,s.aligne_def)-s.player),Vector2D())
@@ -342,10 +342,10 @@ class joueur_defenseur2(Strategy):
                 if s.cannot:
                     return SoccerAction((s.ball+2*s.vball-s.player),Vector2D())
                 else:
-                    return SoccerAction((s.ball-s.player),s.fproche.normalize()*3)   
+                    return SoccerAction((s.ball-s.player),s.allier2v2.normalize()*3)   
 
 
-
+# goal pour le 4v4
 class joueur_goal(Strategy):
     def __init__(self):
         Strategy.__init__(self, "gardien")
